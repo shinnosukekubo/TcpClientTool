@@ -137,13 +137,11 @@ namespace TcpClient
             if (Client == null)
                 return;
 
-            Client.OnDisconnected += (errorMessage) =>
-            {
-                WriteLog(string.IsNullOrEmpty(errorMessage) ? "切断しました" : errorMessage);
-                Client.Dispose();
-                Client = null;
-            };
             Client.Disconnect();
+            var errorMessage = Client.DisconnectWait();
+            WriteLog(string.IsNullOrEmpty(errorMessage) ? "切断しました" : errorMessage);
+            Client.Dispose();
+            Client = null;
         }
     }
 }
